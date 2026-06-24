@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>チーム再編成ツール</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif;
+  background: #EFF2F7;
+  min-height: 100vh;
+}
+.header {
+  background: linear-gradient(135deg, #1a2e5a 0%, #2563EB 100%);
+  color: white;
+  padding: 18px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.header h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.03em; }
+.header p  { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+
+.body { max-width: 1120px; margin: 0 auto; padding: 16px; }
+
+.tab-row {
+  display: flex; gap: 8px; margin-bottom: 16px;
+  align-items: center; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 8px 20px; border-radius: 8px; border: none;
+  cursor: pointer; font-weight: 700; font-size: 13px;
+  transition: all .15s; font-family: inherit;
+}
+.tab-active   { background: #1D4ED8; color: white; box-shadow: 0 2px 8px rgba(29,78,216,.35); }
+.tab-inactive { background: white; color: #475569; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.tab-disabled { background: white; color: #CBD5E1; cursor: not-allowed; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+
+.badge        { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; font-weight: 600; }
+.osaka-badge  { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; font-weight: 600; }
+.sample-btn   { padding: 7px 14px; border-radius: 7px; border: 1px solid #CBD5E1; cursor: pointer; font-size: 12px; background: white; color: #475569; font-family: inherit; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 10px; margin-bottom: 14px; }
+
+.card { background: white; border-radius: 10px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.team-name-input {
+  width: 100%; border: none; border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 10px; padding-bottom: 5px; font-weight: 700;
+  font-size: 13px; outline: none; background: transparent; font-family: inherit;
+}
+.member-row { display: flex; gap: 4px; margin-bottom: 5px; align-items: center; }
+.member-input {
+  flex: 1; border: 1px solid #E2E8F0; border-radius: 6px;
+  padding: 6px 8px; font-size: 13px; outline: none;
+  font-family: inherit; color: #334155; transition: border .15s; min-width: 0;
+}
+.osaka-btn {
+  padding: 4px 7px; border-radius: 5px; border: 1px solid #E2E8F0;
+  background: white; font-size: 11px; font-weight: 700; cursor: pointer;
+  color: #94A3B8; transition: all .15s; white-space: nowrap;
+  flex-shrink: 0; font-family: inherit;
+}
+.osaka-btn.on { background: #FFF7ED; border-color: #FB923C; color: #EA580C; }
+
+.err-box {
+  background: #FEF2F2; border: 1px solid #FECACA;
+  border-radius: 8px; padding: 10px 16px; color: #DC2626;
+  font-size: 13px; margin-bottom: 14px; display: none;
+}
+.gen-wrap { text-align: center; padding: 16px 0 8px; }
+.gen-btn {
+  padding: 13px 40px;
+  background: linear-gradient(135deg, #1D4ED8, #2563EB);
+  color: white; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 800; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(29,78,216,.45);
+  letter-spacing: .03em; font-family: inherit;
+}
+.gen-btn:hover { filter: brightness(1.08); }
+
+.result-bar {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+}
+.success-msg { color: #059669; font-weight: 700; font-size: 13px; }
+.regen-btn {
+  padding: 7px 14px; background: white; border: 1px solid #CBD5E1;
+  border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit;
+}
+.copy-btn {
+  padding: 7px 16px; background: #1D4ED8; color: white;
+  border: none; border-radius: 7px; cursor: pointer;
+  font-size: 13px; font-family: inherit; transition: background .2s;
+}
+.copy-btn.done { background: #059669; }
+
+.result-member-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.orig-tag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  font-weight: 700; white-space: nowrap; flex-shrink: 0;
+}
+.osaka-result-tag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA;
+  font-weight: 700; flex-shrink: 0;
+}
+.member-name { font-size: 13px; color: #1E293B; }
+.result-card-title {
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 10px; border-bottom-width: 1px; border-bottom-style: solid;
+  padding-bottom: 6px;
+}
+
+.footer { text-align: center; padding: 20px 16px 12px; font-size: 11px; color: #94A3B8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔀 チーム再編成ツール</h1>
+  <p>旧チームのメンバーが被らず、大阪メンバーも全員バラバラになる新チームを自動生成（15チーム × 4名）</p>
+</div>
+
+<div class="body">
+  <div class="tab-row" id="tabRow"></div>
+  <div id="mainContent"></div>
+</div>
+
+<div class="footer">旧チーム重複なし ＋ 大阪メンバー分散をランダムアルゴリズムで生成します</div>
+
+<script>
+const N_TEAMS = 15, N_PER = 4;
+
+const PALETTE = [
+  "#3B82F6","#10B981","#8B5CF6","#F59E0B","#EF4444",
+  "#06B6D4","#84CC16","#F97316","#EC4899","#6366F1",
+  "#14B8A6","#A855F7","#22C55E","#EAB308","#64748B"
+];
+
+const SAMPLE = [
+  ["田中 健一","鈴木 花子","佐藤 大輔","高橋 恵"],
+  ["渡辺 拓哉","伊藤 美咲","山本 隆","中村 さくら"],
+  ["小林 誠","加藤 由美","吉田 浩二","山田 真理"],
+  ["佐々木 剛","山口 千夏","松本 勇太","井上 綾"],
+  ["木村 博","林 奈々","斎藤 亮介","清水 朋子"],
+  ["山崎 広志","森 ひとみ","阿部 圭吾","池田 茜"],
+  ["橋本 翔","山下 静香","石川 卓也","中島 愛"],
+  ["前田 浩","藤田 玲子","後藤 慎吾","小川 舞"],
+  ["岡田 勇一","長谷川 桃","村上 誠一","近藤 恵子"],
+  ["石田 健","坂本 亮","遠藤 夏実","青木 正人"],
+  ["藤井 めぐみ","西村 達也","福田 香奈","太田 雄介"],
+  ["三浦 早紀","岡本 治郎","松田 友美","中川 昇"],
+  ["中野 悠斗","原田 恵利","小野 裕二","竹内 美紀"],
+  ["田村 雅夫","金子 亮介","和田 千恵","中山 勝也"],
+  ["藤原 誠一","石井 夕子","上田 博之","森田 明美"],
+];
+// サンプル用の大阪メンバー位置（チームindex, メンバーindex）
+const SAMPLE_OSAKA = [[1,2],[3,0],[6,3],[9,1],[12,0],[14,2]];
+
+// ─── State ───────────────────────────────────────────
+let state = {
+  view: "input",
+  teams: Array.from({length: N_TEAMS}, (_, i) => ({
+    name: `チーム${i+1}`,
+    members: Array.from({length: N_PER}, () => ({name:"", osaka:false}))
+  })),
+  result: null,
+  error: ""
+};
+
+// ─── Algorithm ───────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function generate() {
+  const members = state.teams.flatMap((t,i) =>
+    t.members.map(m => ({n:m.name.trim(), i, osaka:m.osaka}))
+  );
+  for (let attempt=0; attempt<5000; attempt++) {
+    const pool = shuffle(members);
+    const buckets = Array.from({length:N_TEAMS}, ()=>[]);
+    let ok = true;
+    for (const m of pool) {
+      const order = shuffle([...Array(N_TEAMS).keys()]);
+      let placed = false;
+      for (const t of order) {
+        const b = buckets[t];
+        if (
+          b.length < N_PER &&
+          !b.some(x => x.i === m.i) &&
+          !(m.osaka && b.some(x => x.osaka))
+        ) { b.push(m); placed=true; break; }
+      }
+      if (!placed) { ok=false; break; }
+    }
+    if (ok && buckets.every(b=>b.length===N_PER)) return buckets;
+  }
+  return null;
+}
+
+// ─── Actions ─────────────────────────────────────────
+function loadSample() {
+  state.teams = SAMPLE.map((s,i) => ({
+    name: `チーム${i+1}`,
+    members: s.map((name,j) => ({
+      name,
+      osaka: SAMPLE_OSAKA.some(([ti,mi])=>ti===i&&mi===j)
+    }))
+  }));
+  state.result = null; state.error = "";
+  render();
+}
+
+function doGenerate() {
+  const all = state.teams.flatMap(t=>t.members.map(m=>m.name.trim())).filter(Boolean);
+  const total = N_TEAMS * N_PER;
+  if (all.length < total) {
+    showError(`あと${total-all.length}名の名前を入力してください`); return;
+  }
+  if (new Set(all).size < all.length) {
+    showError("重複する名前があります。全員に異なる名前を入力してください"); return;
+  }
+  const osakaCount = state.teams.flatMap(t=>t.members).filter(m=>m.osaka).length;
+  if (osakaCount > N_TEAMS) {
+    showError(`大阪メンバーは最大${N_TEAMS}名まで設定できます`); return;
+  }
+  const r = generate();
+  if (r) {
+    state.result=r; state.error=""; state.view="result"; render();
+  } else {
+    showError("生成に失敗しました。もう一度お試しください");
+  }
+}
+
+function doRegenerate() {
+  const r = generate();
+  if (r) { state.result=r; renderResultContent(); }
+}
+
+function doCopy() {
+  const text = state.result.map((b,i)=>
+    `新チーム${i+1}：${b.map(m=>m.n+(m.osaka?"（大阪）":"")).join("、")}`
+  ).join("\n");
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById("copyBtn");
+    if (!btn) return;
+    btn.textContent="✅ コピー済み"; btn.classList.add("done");
+    setTimeout(()=>{ btn.textContent="📋 テキストをコピー"; btn.classList.remove("done"); }, 2000);
+  });
+}
+
+function switchView(v) {
+  if (v==="result" && !state.result) return;
+  state.view=v; render();
+}
+
+function setTeamName(ti, v) {
+  state.teams[ti].name=v; renderTabs();
+}
+function setMemberName(ti, mi, v) {
+  state.teams[ti].members[mi].name=v; renderTabs();
+}
+function toggleOsaka(ti, mi) {
+  state.teams[ti].members[mi].osaka = !state.teams[ti].members[mi].osaka;
+  const btn = document.getElementById(`ob-${ti}-${mi}`);
+  if (btn) btn.classList.toggle("on", state.teams[ti].members[mi].osaka);
+  renderTabs();
+}
+
+function showError(msg) {
+  state.error=msg;
+  const el=document.getElementById("errBox");
+  if (el) { el.textContent="⚠️ "+msg; el.style.display="block"; }
+}
+
+// ─── Rendering ───────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function getFilledCount() {
+  return state.teams.flatMap(t=>t.members).filter(m=>m.name.trim()).length;
+}
+function getOsakaCount() {
+  return state.teams.flatMap(t=>t.members).filter(m=>m.osaka).length;
+}
+
+function renderTabs() {
+  const filled = getFilledCount();
+  const osaka  = getOsakaCount();
+  const hasRes = !!state.result;
+  document.getElementById("tabRow").innerHTML = `
+    <button class="tab-btn ${state.view==="input"?"tab-active":"tab-inactive"}" onclick="switchView('input')">① メンバー入力</button>
+    ${hasRes
+      ? `<button class="tab-btn ${state.view==="result"?"tab-active":"tab-inactive"}" onclick="switchView('result')">② 新チーム結果</button>`
+      : `<button class="tab-btn tab-disabled" disabled>② 新チーム結果</button>`}
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span class="badge">${filled} / ${N_TEAMS*N_PER} 名入力済み</span>
+      <span class="osaka-badge">🏙️ 大阪 ${osaka} 名</span>
+      <button class="sample-btn" onclick="loadSample()">サンプルデータを入力</button>
+    </div>
+  `;
+}
+
+function buildInputHTML() {
+  let h = '<div class="grid">';
+  state.teams.forEach((team,ti)=>{
+    const col = PALETTE[ti];
+    h += `<div class="card" style="border-left:4px solid ${col}">`;
+    h += `<input class="team-name-input" style="color:${col}" value="${esc(team.name)}"
+            oninput="setTeamName(${ti},this.value)" />`;
+    team.members.forEach((m,mi)=>{
+      h += `<div class="member-row">
+        <input class="member-input" value="${esc(m.name)}" placeholder="メンバー ${mi+1}"
+          oninput="setMemberName(${ti},${mi},this.value)"
+          onfocus="this.style.borderColor='${col}'"
+          onblur="this.style.borderColor='#E2E8F0'" />
+        <button id="ob-${ti}-${mi}" class="osaka-btn${m.osaka?" on":""}"
+          onclick="toggleOsaka(${ti},${mi})">大阪</button>
+      </div>`;
+    });
+    h += '</div>';
+  });
+  h += '</div>';
+  h += `<div id="errBox" class="err-box"${state.error?"":" style=\"display:none\""}>
+    ${state.error?"⚠️ "+esc(state.error):""}</div>`;
+  h += `<div class="gen-wrap">
+    <button class="gen-btn" onclick="doGenerate()">新チームを生成する →</button>
+  </div>`;
+  return h;
+}
+
+function renderResultContent() {
+  const content = document.getElementById("mainContent");
+  let h = `<div class="result-bar">
+    <span class="success-msg">✅ 全${N_TEAMS*N_PER}名、旧チーム重複なし・大阪メンバーも全員バラバラで配置！</span>
+    <div style="display:flex;gap:8px">
+      <button class="regen-btn" onclick="doRegenerate()">🎲 別パターンを生成</button>
+      <button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 テキストをコピー</button>
+    </div>
+  </div><div class="grid">`;
+
+  state.result.forEach((bucket,ni)=>{
+    const col = PALETTE[ni];
+    h += `<div class="card" style="border-left:4px solid ${col}">`;
+    h += `<div class="result-card-title" style="color:${col};border-bottom-color:${col}20">新チーム ${ni+1}</div>`;
+    bucket.forEach(m=>{
+      const oc = PALETTE[m.i];
+      h += `<div class="result-member-row">
+        <span class="orig-tag" style="background:${oc}18;color:${oc};border:1px solid ${oc}45">旧${m.i+1}</span>
+        ${m.osaka?'<span class="osaka-result-tag">大阪</span>':""}
+        <span class="member-name">${esc(m.n)}</span>
+      </div>`;
+    });
+    h += '</div>';
+  });
+  h += '</div>';
+  content.innerHTML = h;
+}
+
+function render() {
+  renderTabs();
+  const content = document.getElementById("mainContent");
+  if (state.view==="input") {
+    content.innerHTML = buildInputHTML();
+  } else if (state.view==="result" && state.result) {
+    renderResultContent();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
