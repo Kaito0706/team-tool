@@ -20,27 +20,23 @@ body { font-family: 'Hiragino Sans','Yu Gothic UI','Meiryo',system-ui,sans-serif
 .upload-btn   { padding: 10px 24px; background: #2563EB; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
 .summary-card { background: white; border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 14px; }
 .summary-title { font-size: 15px; font-weight: 800; color: #1E293B; margin-bottom: 14px; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px; }
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 10px; margin-bottom: 14px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 10px; margin-bottom: 14px; }
 .stat-box { background: #F8FAFC; border-radius: 8px; padding: 12px 14px; }
 .stat-num  { font-size: 22px; font-weight: 800; color: #1D4ED8; }
 .stat-label{ font-size: 11px; color: #64748B; margin-top: 2px; }
 .stat-box.orange .stat-num { color: #C2410C; }
 .stat-box.green  .stat-num { color: #059669; }
 .stat-box.red    .stat-num { color: #DC2626; }
-.osaka-list { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
-.osaka-list-title { font-size: 12px; font-weight: 800; color: #C2410C; margin-bottom: 8px; }
-.osaka-item { display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #FED7AA; border-radius: 6px; padding: 4px 10px; margin: 3px; font-size: 12px; }
-.osaka-pair-arrow { color: #EA580C; font-size: 11px; }
 .gen-wrap { text-align: center; padding: 8px 0 4px; }
 .gen-btn { padding: 14px 44px; background: linear-gradient(135deg,#1D4ED8,#2563EB); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(29,78,216,.4); font-family: inherit; }
 .gen-btn:hover { filter: brightness(1.08); }
 .result-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
 .success-msg { color: #059669; font-weight: 700; font-size: 13px; }
-.regen-btn { padding: 7px 14px; background: white; border: 1px solid #CBD5E1; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
-.copy-btn  { padding: 7px 16px; background: #1D4ED8; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.regen-btn  { padding: 7px 14px; background: white; border: 1px solid #CBD5E1; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.copy-btn   { padding: 7px 16px; background: #1D4ED8; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
 .copy-btn.done { background: #059669; }
 .export-btn { padding: 7px 16px; background: #059669; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 700; }
-.back-btn  { padding: 7px 14px; background: white; border: 1px solid #CBD5E1; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
+.back-btn   { padding: 7px 14px; background: white; border: 1px solid #CBD5E1; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(215px,1fr)); gap: 10px; }
 .card { background: white; border-radius: 10px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
 .card.has-osaka { border-top: 2px solid #FB923C; }
@@ -67,20 +63,12 @@ body { font-family: 'Hiragino Sans','Yu Gothic UI','Meiryo',system-ui,sans-serif
 <script>
 const PALETTE=["#3B82F6","#10B981","#8B5CF6","#F59E0B","#EF4444","#06B6D4","#84CC16","#F97316","#EC4899","#6366F1","#14B8A6","#A855F7","#22C55E","#EAB308","#64748B"];
 
-let app={
-  view:'upload',
-  participants:[],
-  forbiddenPairs:[],
-  stats:{},
-  osakaInfo:[],
-  teamNames:[],
-  result:null
-};
+let app={view:'upload',participants:[],stats:{},teamNames:[],result:null};
 
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
-function findOsakaPairs(objs,forbidden,nPairs){
+function findOsakaPairs(objs,nPairs){
   for(let a=0;a<2000;a++){
     const sh=shuffle(objs);
     const pairs=[];
@@ -89,10 +77,6 @@ function findOsakaPairs(objs,forbidden,nPairs){
     let ok=true;
     for(const [x,y] of pairs){
       if(x.origTeam>=0&&x.origTeam===y.origTeam){ok=false;break;}
-      for(const [f1,f2] of forbidden){
-        if(f1&&f2){const ns=new Set([x.n,y.n]);if(ns.has(f1)&&ns.has(f2)){ok=false;break;}}
-      }
-      if(!ok)break;
     }
     if(ok)return{pairs,solo};
   }
@@ -107,11 +91,10 @@ function generate(){
   const sizes=Array.from({length:nTeams},(_,i)=>base+(i<extra?1:0));
   const osaka=participants.filter(m=>m.osaka);
   const nonOsaka=participants.filter(m=>!m.osaka);
-  const forbidden=app.forbiddenPairs;
   const nPairs=Math.floor(osaka.length/2);
   for(let att=0;att<5000;att++){
     let pairs=[],solo=null;
-    if(nPairs>0){const res=findOsakaPairs(osaka,forbidden,nPairs);if(!res)continue;pairs=res.pairs;solo=res.solo;}
+    if(nPairs>0){const res=findOsakaPairs(osaka,nPairs);if(!res)continue;pairs=res.pairs;solo=res.solo;}
     else if(osaka.length===1)solo=osaka[0];
     const buckets=Array.from({length:nTeams},()=>[]);
     let ok=true;
@@ -142,10 +125,9 @@ function parseExcel(file){
     reader.onload=e=>{
       try{
         const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
-        const getSheet=name=>XLSX.utils.sheet_to_json(wb.Sheets[name]||wb.Sheets[wb.SheetNames.find(n=>n.includes(name.slice(0,3)))]||{});
+        const getSheet=name=>XLSX.utils.sheet_to_json(wb.Sheets[name]||wb.Sheets[wb.SheetNames.find(n=>n&&n.includes(name.slice(0,3)))]||{});
         const prevRows=getSheet('前回チーム');
         const currRows=getSheet('今回参加者');
-        const osakaRows=getSheet('大阪メンバー');
         const teamNames=[...new Set(prevRows.map(r=>String(r['チーム名']||'').trim()).filter(Boolean))];
         const memberToTeam={};
         prevRows.forEach(r=>{
@@ -153,37 +135,24 @@ function parseExcel(file){
           const team=String(r['チーム名']||'').trim();
           if(name&&team)memberToTeam[name]=teamNames.indexOf(team);
         });
-        const currNames=new Set(currRows.map(r=>String(r['メンバー名']||'').trim()).filter(Boolean));
-        const osakaNames=new Set(osakaRows.map(r=>String(r['メンバー名']||'').trim()).filter(Boolean));
-        const pairSeen=new Set();
-        const forbiddenPairs=[];
-        const osakaInfo=[];
-        osakaRows.forEach(r=>{
-          const name=String(r['メンバー名']||'').trim();
-          const partner=String(r['前回ペア']||'').trim();
-          if(!name)return;
-          if(!osakaInfo.find(x=>x.name===name))osakaInfo.push({name,partner});
-          if(name&&partner){
-            const key=[name,partner].sort().join('|||');
-            if(!pairSeen.has(key)){pairSeen.add(key);forbiddenPairs.push([name,partner]);}
-          }
-        });
         const participants=[];
-        currNames.forEach(name=>{
+        currRows.forEach(r=>{
+          const name=String(r['メンバー名']||'').trim();
+          if(!name)return;
+          const osaka=!!(r['大阪']&&String(r['大阪']).trim());
           const origTeam=memberToTeam.hasOwnProperty(name)?memberToTeam[name]:-1;
-          const osaka=osakaNames.has(name);
           participants.push({n:name,origTeam,osaka});
         });
+        const currNames=new Set(participants.map(p=>p.n));
         const prevNames=new Set(Object.keys(memberToTeam));
         const stats={
-          total:currNames.size,
+          total:participants.length,
           prevTeams:teamNames.length,
-          returning:[...currNames].filter(n=>prevNames.has(n)).length,
           newCount:[...currNames].filter(n=>!prevNames.has(n)).length,
           absentCount:[...prevNames].filter(n=>!currNames.has(n)).length,
-          osakaPresent:[...currNames].filter(n=>osakaNames.has(n)).length
+          osakaPresent:participants.filter(p=>p.osaka).length
         };
-        resolve({participants,forbiddenPairs,stats,osakaInfo,teamNames});
+        resolve({participants,stats,teamNames});
       }catch(err){reject(err);}
     };
     reader.onerror=reject;
@@ -195,12 +164,9 @@ async function handleFile(file){
   try{
     const data=await parseExcel(file);
     app.participants=data.participants;
-    app.forbiddenPairs=data.forbiddenPairs;
     app.stats=data.stats;
-    app.osakaInfo=data.osakaInfo;
     app.teamNames=data.teamNames;
-    app.view='loaded';
-    app.result=null;
+    app.view='loaded';app.result=null;
     render();
   }catch(e){
     alert('Excelの読み込みに失敗しました。シート名・列名をご確認ください。');
@@ -211,10 +177,7 @@ async function handleFile(file){
 function doGenerate(){
   const r=generate();
   if(r){app.result=r;app.view='result';render();}
-  else{
-    const el=document.getElementById('errBox');
-    if(el){el.textContent='⚠️ 生成に失敗しました。もう一度お試しください';el.style.display='block';}
-  }
+  else{const el=document.getElementById('errBox');if(el){el.textContent='⚠️ 生成に失敗しました。もう一度お試しください';el.style.display='block';}}
 }
 function doRegenerate(){const r=generate();if(r){app.result=r;renderResult();}}
 function doCopy(){
@@ -226,6 +189,7 @@ function doCopy(){
   });
 }
 function goBack(){app.view='loaded';render();}
+
 function exportNextExcel(){
   const wb=XLSX.utils.book_new();
   const PER_ROW=5;
@@ -251,16 +215,8 @@ function exportNextExcel(){
     bucket.forEach(m=>{prevData.push({'チーム名':'チーム'+(ni+1),'メンバー名':m.n});});
   });
   XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(prevData),'前回チーム');
-  const currData=app.participants.map(p=>({'メンバー名':p.n}));
+  const currData=app.participants.map(p=>({'メンバー名':p.n,'大阪':p.osaka?'○':''}));
   XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(currData),'今回参加者');
-  const newPairs={};
-  app.result.forEach(bucket=>{
-    const ok=bucket.filter(m=>m.osaka);
-    if(ok.length===2){newPairs[ok[0].n]=ok[1].n;newPairs[ok[1].n]=ok[0].n;}
-  });
-  const allOsakaNames=[...new Set([...app.participants.filter(p=>p.osaka).map(p=>p.n),...app.osakaInfo.map(o=>o.name)])];
-  const osakaData=allOsakaNames.map(name=>({'メンバー名':name,'前回ペア':newPairs[name]||''}));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(osakaData),'大阪メンバー');
   XLSX.writeFile(wb,'チーム再編成_次回用.xlsx');
 }
 
@@ -269,7 +225,7 @@ function renderUpload(){
     <div class="upload-area" id="dropZone">
       <div class="upload-icon">📊</div>
       <div class="upload-title">Excelファイルをアップロード</div>
-      <div class="upload-sub">雛形Excelに前回チーム・今回参加者・大阪メンバーを入力してアップロードしてください</div>
+      <div class="upload-sub">「前回チーム」「今回参加者」の2シートが入ったExcelをアップロードしてください</div>
       <button class="upload-btn" onclick="document.getElementById('fileInput').click()">ファイルを選択</button>
       <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none">
     </div>`;
@@ -284,16 +240,6 @@ function renderUpload(){
 function renderLoaded(){
   const s=app.stats;
   const nTeams=Math.ceil(s.total/4);
-  const pairSeen=new Set();
-  let osakaHTML='';
-  app.osakaInfo.forEach(({name,partner})=>{
-    if(!partner)return;
-    const key=[name,partner].sort().join('|');
-    if(!pairSeen.has(key)){pairSeen.add(key);osakaHTML+=`<span class="osaka-item">${esc(name)} <span class="osaka-pair-arrow">↔</span> ${esc(partner)}</span>`;}
-  });
-  app.osakaInfo.filter(x=>!x.partner).forEach(({name})=>{
-    osakaHTML+=`<span class="osaka-item">${esc(name)}</span>`;
-  });
   document.getElementById('main').innerHTML=`
     <div class="summary-card">
       <div class="summary-title">📊 読み込み完了</div>
@@ -305,7 +251,6 @@ function renderLoaded(){
         <div class="stat-box green"><div class="stat-num">${s.newCount}</div><div class="stat-label">新規参加者</div></div>
         <div class="stat-box orange"><div class="stat-num">${s.osakaPresent}</div><div class="stat-label">大阪メンバー</div></div>
       </div>
-      ${osakaHTML?`<div class="osaka-list"><div class="osaka-list-title">🏙️ 大阪メンバー（前回ペアは再ペアにしません）</div>${osakaHTML}</div>`:''}
       <div id="errBox" class="err-box"></div>
       <div class="gen-wrap"><button class="gen-btn" onclick="doGenerate()">新チームを生成する →</button></div>
     </div>`;
