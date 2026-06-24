@@ -10,7 +10,7 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-s
 .header { background: linear-gradient(135deg, #1a2e5a 0%, #2563EB 100%); color: white; padding: 18px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 .header h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.03em; }
 .header p  { font-size: 12px; opacity: 0.75; margin-top: 4px; }
-.body { max-width: 1120px; margin: 0 auto; padding: 16px; }
+.body { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .tab-row { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
 .tab-btn { padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; font-size: 13px; transition: all .15s; font-family: inherit; }
 .tab-active   { background: #1D4ED8; color: white; box-shadow: 0 2px 8px rgba(29,78,216,.35); }
@@ -20,23 +20,40 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-s
 .osaka-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; font-weight: 600; }
 .osaka-badge.ok { background: #FFEDD5; color: #C2410C; border-color: #FB923C; font-weight: 800; }
 .sample-btn  { padding: 7px 14px; border-radius: 7px; border: 1px solid #CBD5E1; cursor: pointer; font-size: 12px; background: white; color: #475569; font-family: inherit; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.section-label { font-size: 14px; font-weight: 800; color: #1E293B; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 10px; margin-bottom: 8px; }
 .card { background: white; border-radius: 10px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
 .card.has-osaka { border-top: 2px solid #FB923C; }
-.team-name-input { width: 100%; border: none; border-bottom: 1px solid #E2E8F0; margin-bottom: 10px; padding-bottom: 5px; font-weight: 700; font-size: 13px; outline: none; background: transparent; font-family: inherit; }
-.member-row { display: flex; gap: 4px; margin-bottom: 5px; align-items: center; }
-.member-input { flex: 1; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 8px; font-size: 13px; outline: none; font-family: inherit; color: #334155; transition: border .15s; min-width: 0; }
-.osaka-btn { padding: 4px 7px; border-radius: 5px; border: 1px solid #E2E8F0; background: white; font-size: 11px; font-weight: 700; cursor: pointer; color: #94A3B8; white-space: nowrap; flex-shrink: 0; font-family: inherit; }
-.osaka-btn.on { background: #FFF7ED; border-color: #FB923C; color: #EA580C; }
-.osaka-pair-section { background: white; border: 1.5px solid #FED7AA; border-radius: 12px; padding: 16px 20px; margin-bottom: 14px; }
-.pair-section-title { font-size: 14px; font-weight: 800; color: #C2410C; margin-bottom: 12px; }
+.add-team-card { border: 2px dashed #CBD5E1 !important; background: transparent !important; box-shadow: none !important; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 110px; border-radius: 10px; transition: border-color .15s; }
+.add-team-card:hover { border-color: #94A3B8 !important; }
+.card-header { display: flex; align-items: center; gap: 4px; margin-bottom: 10px; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px; }
+.team-name-input { flex: 1; border: none; font-weight: 700; font-size: 13px; outline: none; background: transparent; font-family: inherit; min-width: 0; }
+.del-team-btn { border: none; background: none; cursor: pointer; color: #CBD5E1; font-size: 18px; padding: 0 2px; flex-shrink: 0; line-height: 1; }
+.del-team-btn:hover { color: #94A3B8; }
+.member-row { display: flex; gap: 3px; margin-bottom: 5px; align-items: center; }
+.member-row.absent .member-input { text-decoration: line-through; color: #94A3B8; background: #F8FAFC; }
+.member-input { flex: 1; border: 1px solid #E2E8F0; border-radius: 6px; padding: 5px 7px; font-size: 12px; outline: none; font-family: inherit; color: #334155; transition: border .15s; min-width: 0; }
+.osaka-btn  { padding: 3px 5px; border-radius: 4px; border: 1px solid #E2E8F0; background: white; font-size: 10px; font-weight: 700; cursor: pointer; color: #94A3B8; white-space: nowrap; flex-shrink: 0; font-family: inherit; }
+.osaka-btn.on  { background: #FFF7ED; border-color: #FB923C; color: #EA580C; }
+.absent-btn { padding: 3px 5px; border-radius: 4px; border: 1px solid #E2E8F0; background: white; font-size: 10px; font-weight: 700; cursor: pointer; color: #94A3B8; white-space: nowrap; flex-shrink: 0; font-family: inherit; }
+.absent-btn.on { background: #FEF2F2; border-color: #FCA5A5; color: #DC2626; }
+.new-section { background: white; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+.new-section-title { font-size: 13px; font-weight: 800; color: #1D4ED8; margin-bottom: 10px; }
+.new-hint { font-weight: 400; color: #3B82F6; margin-left: 6px; }
+.new-member-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+.new-member-input { flex: 1; border: 1px solid #BFDBFE; border-radius: 6px; padding: 6px 8px; font-size: 13px; outline: none; font-family: inherit; color: #334155; }
+.new-member-input:focus { border-color: #3B82F6; }
+.del-btn { border: none; background: none; cursor: pointer; color: #CBD5E1; font-size: 18px; padding: 0 4px; flex-shrink: 0; }
+.del-btn:hover { color: #94A3B8; }
+.add-member-btn { padding: 6px 14px; border: 1.5px dashed #BFDBFE; border-radius: 7px; background: white; color: #3B82F6; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 4px; }
+.osaka-pair-section { background: white; border: 1.5px solid #FED7AA; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+.pair-section-title { font-size: 13px; font-weight: 800; color: #C2410C; margin-bottom: 10px; }
 .pair-hint { display: block; font-weight: 400; font-size: 12px; color: #92400E; margin-top: 3px; }
-.pair-row-input { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.pair-row-input { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
 .pair-label { font-size: 13px; font-weight: 700; color: #78350F; white-space: nowrap; min-width: 90px; }
 .pair-and   { font-size: 13px; color: #78350F; }
-.pair-select { border: 1px solid #FED7AA; border-radius: 6px; padding: 6px 10px; font-size: 13px; outline: none; font-family: inherit; color: #334155; background: #FFFBF7; cursor: pointer; }
-.pair-select:focus { border-color: #FB923C; }
-.err-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 16px; color: #DC2626; font-size: 13px; margin-bottom: 14px; display: none; }
+.pair-select { border: 1px solid #FED7AA; border-radius: 6px; padding: 5px 8px; font-size: 13px; outline: none; font-family: inherit; color: #334155; background: #FFFBF7; cursor: pointer; }
+.err-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 16px; color: #DC2626; font-size: 13px; margin-bottom: 12px; display: none; }
 .gen-wrap { text-align: center; padding: 16px 0 8px; }
 .gen-btn { padding: 13px 40px; background: linear-gradient(135deg,#1D4ED8,#2563EB); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(29,78,216,.45); font-family: inherit; }
 .gen-btn:hover { filter: brightness(1.08); }
@@ -46,18 +63,19 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-s
 .copy-btn  { padding: 7px 16px; background: #1D4ED8; color: white; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-family: inherit; transition: background .2s; }
 .copy-btn.done { background: #059669; }
 .result-card-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; border-bottom-width: 1px; border-bottom-style: solid; padding-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.osaka-pair-badge  { font-size: 11px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; border-radius: 4px; padding: 1px 6px; font-weight: 700; }
+.osaka-pair-badge { font-size: 11px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; border-radius: 4px; padding: 1px 6px; font-weight: 700; }
 .result-member-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-.orig-tag          { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-.osaka-result-tag  { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; font-weight: 700; flex-shrink: 0; }
-.member-name       { font-size: 13px; color: #1E293B; }
+.orig-tag  { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+.new-tag   { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; font-weight: 700; flex-shrink: 0; }
+.osaka-result-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; font-weight: 700; flex-shrink: 0; }
+.member-name { font-size: 13px; color: #1E293B; }
 .footer { text-align: center; padding: 20px 16px 12px; font-size: 11px; color: #94A3B8; }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>🔀 チーム再編成ツール</h1>
-  <p>旧チーム重複なし ＋ 大阪メンバーは2人1組・前回と別ペアに自動配置（15チーム × 4名）</p>
+  <p>旧チーム重複なし ＋ 大阪メンバーは2人1組・前回と別ペアに自動配置</p>
 </div>
 <div class="body">
   <div class="tab-row" id="tabRow"></div>
@@ -65,7 +83,7 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-s
 </div>
 <div class="footer">旧チーム重複なし ＋ 大阪ペア前回と異なる組み合わせをランダムアルゴリズムで生成します</div>
 <script>
-const N_TEAMS=15,N_PER=4;
+const N_PER=4;
 const PALETTE=["#3B82F6","#10B981","#8B5CF6","#F59E0B","#EF4444","#06B6D4","#84CC16","#F97316","#EC4899","#6366F1","#14B8A6","#A855F7","#22C55E","#EAB308","#64748B"];
 const SAMPLE=[
   ["田中 健一","鈴木 花子","佐藤 大輔","高橋 恵"],["渡辺 拓哉","伊藤 美咲","山本 隆","中村 さくら"],
@@ -78,18 +96,32 @@ const SAMPLE=[
   ["藤原 誠一","石井 夕子","上田 博之","森田 明美"]
 ];
 const SAMPLE_OSAKA=[[1,2],[3,0],[6,3],[9,1],[12,0],[14,2]];
+const SAMPLE_ABSENT=[[0,3],[7,1]];
 
 let state={
   view:"input",
-  teams:Array.from({length:N_TEAMS},(_,i)=>({name:`チーム${i+1}`,members:Array.from({length:N_PER},()=>({name:"",osaka:false}))})),
+  teams:Array.from({length:15},(_,i)=>({
+    name:`チーム${i+1}`,
+    members:Array.from({length:N_PER},()=>({name:"",osaka:false,absent:false}))
+  })),
+  newMembers:[{name:"",osaka:false}],
   prevOsakaPairs:[["",""],["",""],["",""],["",""]],
   result:null,error:""
 };
 
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-function getFilledCount(){return state.teams.flatMap(t=>t.members).filter(m=>m.name.trim()).length;}
-function getOsakaCount(){return state.teams.flatMap(t=>t.members).filter(m=>m.osaka).length;}
+
+function getParticipants(){
+  const old=state.teams.flatMap((t,i)=>
+    t.members.filter(m=>!m.absent&&m.name.trim())
+             .map(m=>({n:m.name.trim(),origTeam:i,osaka:m.osaka}))
+  );
+  const nw=state.newMembers.filter(m=>m.name.trim())
+    .map(m=>({n:m.name.trim(),origTeam:-1,osaka:m.osaka}));
+  return [...old,...nw];
+}
+function getOsakaCount(){return getParticipants().filter(m=>m.osaka).length;}
 
 function findOsakaPairs(objs,forbidden,nPairs){
   for(let a=0;a<2000;a++){
@@ -99,7 +131,7 @@ function findOsakaPairs(objs,forbidden,nPairs){
     const solo=objs.length%2===1?sh[nPairs*2]:null;
     let ok=true;
     for(const [x,y] of pairs){
-      if(x.i===y.i){ok=false;break;}
+      if(x.origTeam>=0&&x.origTeam===y.origTeam){ok=false;break;}
       for(const [f1,f2] of forbidden){
         if(f1&&f2){const ns=new Set([x.n,y.n]);if(ns.has(f1)&&ns.has(f2)){ok=false;break;}}
       }
@@ -111,47 +143,62 @@ function findOsakaPairs(objs,forbidden,nPairs){
 }
 
 function generate(){
-  const all=state.teams.flatMap((t,i)=>t.members.map(m=>({n:m.name.trim(),i,osaka:m.osaka})));
-  const osaka=all.filter(m=>m.osaka&&m.n);
-  const nonOsaka=all.filter(m=>!m.osaka);
+  const participants=getParticipants();
+  const N=participants.length;
+  if(N<2)return null;
+  const nTeams=Math.ceil(N/N_PER);
+  const base=Math.floor(N/nTeams);
+  const extra=N%nTeams;
+  const teamSizes=Array.from({length:nTeams},(_,i)=>base+(i<extra?1:0));
+  const osakaObjs=participants.filter(m=>m.osaka);
+  const nonOsaka=participants.filter(m=>!m.osaka);
   const forbidden=state.prevOsakaPairs.filter(([a,b])=>a&&b);
-  const nPairs=Math.floor(osaka.length/2);
+  const nPairs=Math.floor(osakaObjs.length/2);
   for(let att=0;att<5000;att++){
-    const res=findOsakaPairs(osaka,forbidden,nPairs);
-    if(!res)continue;
-    const{pairs,solo}=res;
-    const buckets=Array.from({length:N_TEAMS},()=>[]);
-    const order=shuffle([...Array(N_TEAMS).keys()]);
-    for(let pi=0;pi<nPairs;pi++)buckets[order[pi]].push(pairs[pi][0],pairs[pi][1]);
-    const pool=shuffle([...(solo?[solo]:[]),...nonOsaka]);
+    let pairs=[],solo=null;
+    if(nPairs>0){
+      const res=findOsakaPairs(osakaObjs,forbidden,nPairs);
+      if(!res)continue;
+      pairs=res.pairs;solo=res.solo;
+    }else if(osakaObjs.length===1){solo=osakaObjs[0];}
+    const buckets=Array.from({length:nTeams},()=>[]);
     let ok=true;
-    for(const m of pool){
-      const ord=shuffle([...Array(N_TEAMS).keys()]);
+    for(const pair of pairs){
+      const ord=shuffle([...Array(nTeams).keys()]);
       let placed=false;
       for(const t of ord){
-        if(buckets[t].length<N_PER&&!buckets[t].some(x=>x.i===m.i)&&!(m.osaka&&buckets[t].some(x=>x.osaka))){buckets[t].push(m);placed=true;break;}
+        if(buckets[t].length+2<=teamSizes[t]&&!buckets[t].some(x=>x.osaka)&&!(pair[0].origTeam>=0&&buckets[t].some(x=>x.origTeam===pair[0].origTeam))&&!(pair[1].origTeam>=0&&buckets[t].some(x=>x.origTeam===pair[1].origTeam))){buckets[t].push(pair[0],pair[1]);placed=true;break;}
       }
       if(!placed){ok=false;break;}
     }
-    if(ok&&buckets.every(b=>b.length===N_PER))return buckets;
+    if(!ok)continue;
+    const pool=shuffle([...(solo?[solo]:[]),...nonOsaka]);
+    for(const m of pool){
+      const ord=shuffle([...Array(nTeams).keys()]);
+      let placed=false;
+      for(const t of ord){
+        if(buckets[t].length<teamSizes[t]&&!(m.origTeam>=0&&buckets[t].some(x=>x.origTeam===m.origTeam))&&!(m.osaka&&buckets[t].some(x=>x.osaka))){buckets[t].push(m);placed=true;break;}
+      }
+      if(!placed){ok=false;break;}
+    }
+    if(ok&&buckets.every((b,i)=>b.length===teamSizes[i]))return buckets;
   }
   return null;
 }
 
 function loadSample(){
-  state.teams=SAMPLE.map((s,i)=>({name:`チーム${i+1}`,members:s.map((name,j)=>({name,osaka:SAMPLE_OSAKA.some(([ti,mi])=>ti===i&&mi===j)}))}));
+  state.teams=SAMPLE.map((s,i)=>({name:`チーム${i+1}`,members:s.map((name,j)=>({name,osaka:SAMPLE_OSAKA.some(([ti,mi])=>ti===i&&mi===j),absent:SAMPLE_ABSENT.some(([ti,mi])=>ti===i&&mi===j)}))}));
   const oNames=SAMPLE_OSAKA.map(([ti,mi])=>SAMPLE[ti][mi]);
   state.prevOsakaPairs=[[oNames[0],oNames[1]],[oNames[2],oNames[3]],[oNames[4],oNames[5]],["",""]];
+  state.newMembers=[{name:"今村 拓海",osaka:false},{name:"松岡 愛",osaka:true},{name:"",osaka:false}];
   state.result=null;state.error="";render();
 }
 
 function doGenerate(){
-  const all=state.teams.flatMap(t=>t.members.map(m=>m.name.trim())).filter(Boolean);
-  if(all.length<N_TEAMS*N_PER){showError(`あと${N_TEAMS*N_PER-all.length}名の名前を入力してください`);return;}
-  if(new Set(all).size<all.length){showError("重複する名前があります");return;}
-  const oc=getOsakaCount();
-  if(oc>8){showError(`大阪メンバーは最大8名までです（現在${oc}名）`);return;}
-  if(oc===1){showError("大阪メンバーが1名です。2名以上チェックするとペアを組みます");return;}
+  const p=getParticipants();
+  if(p.length<4){showError("参加メンバーが4名以上必要です");return;}
+  const names=p.map(m=>m.n);
+  if(new Set(names).size<names.length){showError("重複する名前があります");return;}
   const r=generate();
   if(r){state.result=r;state.error="";state.view="result";render();}
   else showError("生成に失敗しました。もう一度お試しください");
@@ -168,23 +215,38 @@ function doCopy(){
 function switchView(v){if(v==="result"&&!state.result)return;state.view=v;render();}
 function setTeamName(ti,v){state.teams[ti].name=v;renderTabs();}
 function setMemberName(ti,mi,v){state.teams[ti].members[mi].name=v;renderTabs();}
-function toggleOsaka(ti,mi){state.teams[ti].members[mi].osaka=!state.teams[ti].members[mi].osaka;const sy=window.scrollY;render();window.scrollTo(0,sy);}
+function toggleOsaka(ti,mi,type){
+  if(type==="team")state.teams[ti].members[mi].osaka=!state.teams[ti].members[mi].osaka;
+  else state.newMembers[ti].osaka=!state.newMembers[ti].osaka;
+  const sy=window.scrollY;render();window.scrollTo(0,sy);
+}
+function toggleAbsent(ti,mi){
+  state.teams[ti].members[mi].absent=!state.teams[ti].members[mi].absent;
+  const sy=window.scrollY;render();window.scrollTo(0,sy);
+}
+function addTeam(){state.teams.push({name:`チーム${state.teams.length+1}`,members:Array.from({length:N_PER},()=>({name:"",osaka:false,absent:false}))});const sy=window.scrollY;render();window.scrollTo(0,sy);}
+function removeTeam(ti){state.teams.splice(ti,1);const sy=window.scrollY;render();window.scrollTo(0,sy);}
+function setNewMember(mi,v){state.newMembers[mi].name=v;renderTabs();}
+function addNewMember(){state.newMembers.push({name:"",osaka:false});const sy=window.scrollY;render();window.scrollTo(0,sy);}
+function removeNewMember(mi){state.newMembers.splice(mi,1);if(state.newMembers.length===0)state.newMembers.push({name:"",osaka:false});const sy=window.scrollY;render();window.scrollTo(0,sy);}
 function setPrevPair(pi,si,v){state.prevOsakaPairs[pi][si]=v;}
 function showError(msg){state.error=msg;const el=document.getElementById("errBox");if(el){el.textContent="⚠️ "+msg;el.style.display="block";}}
 
 function renderTabs(){
-  const filled=getFilledCount(),osaka=getOsakaCount(),hasRes=!!state.result;
+  const p=getParticipants(),N=p.length,osaka=p.filter(m=>m.osaka).length;
+  const nTeams=N>=4?Math.ceil(N/N_PER):0;
+  const hasRes=!!state.result;
   document.getElementById("tabRow").innerHTML=
     `<button class="tab-btn ${state.view==="input"?"tab-active":"tab-inactive"}" onclick="switchView('input')">① メンバー入力</button>`
     +(hasRes?`<button class="tab-btn ${state.view==="result"?"tab-active":"tab-inactive"}" onclick="switchView('result')">② 新チーム結果</button>`:`<button class="tab-btn tab-disabled" disabled>② 新チーム結果</button>`)
     +`<div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">`
-    +`<span class="badge">${filled} / ${N_TEAMS*N_PER} 名入力済み</span>`
-    +`<span class="osaka-badge${osaka>=2?" ok":""}">🏙️ 大阪 ${osaka}名（最大8）</span>`
+    +`<span class="badge">参加 ${N}名 → ${nTeams}チーム</span>`
+    +(osaka>=2?`<span class="osaka-badge ok">🏙️ 大阪 ${osaka}名</span>`:"")
     +`<button class="sample-btn" onclick="loadSample()">サンプルデータを入力</button></div>`;
 }
 
 function buildOsakaPairSection(){
-  const names=state.teams.flatMap(t=>t.members).filter(m=>m.osaka&&m.name.trim()).map(m=>m.name.trim());
+  const names=getParticipants().filter(m=>m.osaka).map(m=>m.n);
   if(names.length<2)return "";
   function mkSel(pi,si){
     const cur=state.prevOsakaPairs[pi][si];
@@ -202,32 +264,63 @@ function buildOsakaPairSection(){
 }
 
 function buildInputHTML(){
-  let h=`<div class="grid">`;
+  let h=`<div class="section-label">📋 前回のチーム <span style="font-size:11px;font-weight:400;color:#64748B;margin-left:4px">今回参加しないメンバーは「不参加」を押してください</span></div>`;
+  h+=`<div class="grid">`;
   state.teams.forEach((team,ti)=>{
-    const col=PALETTE[ti];
-    h+=`<div class="card" style="border-left:4px solid ${col}"><input class="team-name-input" style="color:${col}" value="${esc(team.name)}" oninput="setTeamName(${ti},this.value)"/>`;
+    const col=PALETTE[ti%PALETTE.length];
+    h+=`<div class="card" style="border-left:4px solid ${col}">`;
+    h+=`<div class="card-header"><input class="team-name-input" style="color:${col}" value="${esc(team.name)}" oninput="setTeamName(${ti},this.value)"/><button class="del-team-btn" onclick="removeTeam(${ti})">×</button></div>`;
     team.members.forEach((m,mi)=>{
-      h+=`<div class="member-row"><input class="member-input" value="${esc(m.name)}" placeholder="メンバー ${mi+1}" oninput="setMemberName(${ti},${mi},this.value)" onfocus="this.style.borderColor='${col}'" onblur="this.style.borderColor='#E2E8F0'"/><button class="osaka-btn${m.osaka?" on":""}" onclick="toggleOsaka(${ti},${mi})">大阪</button></div>`;
+      const ab=m.absent;
+      h+=`<div class="member-row${ab?" absent":""}">`;
+      h+=`<input class="member-input" value="${esc(m.name)}" placeholder="メンバー ${mi+1}" oninput="setMemberName(${ti},${mi},this.value)" onfocus="this.style.borderColor='${col}'" onblur="this.style.borderColor='#E2E8F0'"${ab?" disabled":""}>`;
+      h+=`<button class="osaka-btn${m.osaka?" on":""}" onclick="toggleOsaka(${ti},${mi},'team')"${ab?" disabled style='opacity:.4'":""}>大阪</button>`;
+      h+=`<button class="absent-btn${ab?" on":""}" onclick="toggleAbsent(${ti},${mi})">${ab?"不参加":"参加"}</button>`;
+      h+=`</div>`;
     });
     h+=`</div>`;
   });
+  h+=`<div class="add-team-card" onclick="addTeam()"><span style="color:#94A3B8;font-size:13px;font-weight:600">＋ チームを追加</span></div>`;
+  h+=`</div>`;
+  h+=`<div class="new-section">`;
+  h+=`<div class="new-section-title">✨ 今回の新規参加者<span class="new-hint">前回参加していなかったメンバー</span></div>`;
+  state.newMembers.forEach((m,mi)=>{
+    h+=`<div class="new-member-row">`;
+    h+=`<input class="new-member-input" value="${esc(m.name)}" placeholder="名前を入力" oninput="setNewMember(${mi},this.value)">`;
+    h+=`<button class="osaka-btn${m.osaka?" on":""}" onclick="toggleOsaka(${mi},0,'new')">大阪</button>`;
+    h+=`<button class="del-btn" onclick="removeNewMember(${mi})">×</button>`;
+    h+=`</div>`;
+  });
+  h+=`<button class="add-member-btn" onclick="addNewMember()">＋ 追加</button>`;
   h+=`</div>`;
   h+=buildOsakaPairSection();
-  h+=`<div id="errBox" class="err-box"${state.error?"":" style=\"display:none\""}}>`+(state.error?"⚠️ "+esc(state.error):"")+`</div>`;
+  h+=`<div id="errBox" class="err-box"${state.error?"":" style=\"display:none\""}}>${state.error?"⚠️ "+esc(state.error):""}</div>`;
   h+=`<div class="gen-wrap"><button class="gen-btn" onclick="doGenerate()">新チームを生成する →</button></div>`;
   return h;
 }
 
 function renderResultContent(){
-  let h=`<div class="result-bar"><span class="success-msg">✅ 旧チーム重複なし・大阪ペアも前回と別の組み合わせで配置完了！</span><div style="display:flex;gap:8px"><button class="regen-btn" onclick="doRegenerate()">🎲 別パターンを生成</button><button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 テキストをコピー</button></div></div><div class="grid">`;
+  const p=getParticipants(),N=p.length,nTeams=Math.ceil(N/N_PER);
+  let h=`<div class="result-bar">`
+    +`<span class="success-msg">✅ ${N}名を${nTeams}チームに配置完了！旧チーム重複なし・大阪ペアも前回と別の組み合わせ</span>`
+    +`<div style="display:flex;gap:8px">`
+    +`<button class="regen-btn" onclick="doRegenerate()">🎲 別パターンを生成</button>`
+    +`<button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 テキストをコピー</button>`
+    +`</div></div><div class="grid">`;
   state.result.forEach((bucket,ni)=>{
-    const col=PALETTE[ni];
-    const hasO=bucket.some(m=>m.osaka);
-    const osakaInBucket=bucket.filter(m=>m.osaka).length;
-    h+=`<div class="card${hasO?" has-osaka":""}" style="border-left:4px solid ${col}"><div class="result-card-title" style="color:${col};border-bottom-color:${col}20">新チーム ${ni+1}`+(osakaInBucket===2?` <span class="osaka-pair-badge">🏙️ペア</span>`:osakaInBucket===1?` <span class="osaka-pair-badge">🏙️ソロ</span>`:"")+`</div>`;
+    const col=PALETTE[ni%PALETTE.length];
+    const osakaCount=bucket.filter(m=>m.osaka).length;
+    h+=`<div class="card${osakaCount>0?" has-osaka":""}" style="border-left:4px solid ${col}">`;
+    h+=`<div class="result-card-title" style="color:${col};border-bottom-color:${col}20">新チーム ${ni+1}`
+      +(osakaCount===2?` <span class="osaka-pair-badge">🏙️ペア</span>`:osakaCount===1?` <span class="osaka-pair-badge">🏙️ソロ</span>`:"")+`</div>`;
     bucket.forEach(m=>{
-      const oc=PALETTE[m.i];
-      h+=`<div class="result-member-row"><span class="orig-tag" style="background:${oc}18;color:${oc};border:1px solid ${oc}45">旧${m.i+1}</span>`+(m.osaka?`<span class="osaka-result-tag">大阪</span>`:"")+`<span class="member-name">${esc(m.n)}</span></div>`;
+      const isNew=m.origTeam<0;
+      const oc=isNew?"#2563EB":PALETTE[m.origTeam%PALETTE.length];
+      h+=`<div class="result-member-row">`;
+      if(isNew){h+=`<span class="new-tag">新規</span>`;}
+      else{h+=`<span class="orig-tag" style="background:${oc}18;color:${oc};border:1px solid ${oc}45">旧${m.origTeam+1}</span>`;}
+      if(m.osaka)h+=`<span class="osaka-result-tag">大阪</span>`;
+      h+=`<span class="member-name">${esc(m.n)}</span></div>`;
     });
     h+=`</div>`;
   });
