@@ -228,6 +228,24 @@ function doCopy(){
 function goBack(){app.view='loaded';render();}
 function exportNextExcel(){
   const wb=XLSX.utils.book_new();
+  const PER_ROW=5;
+  const rows=[];
+  for(let gs=0;gs<app.result.length;gs+=PER_ROW){
+    const grp=app.result.slice(gs,gs+PER_ROW);
+    const maxM=Math.max(...grp.map(t=>t.length));
+    const hdr=grp.map((_,i)=>'チーム'+(gs+i+1));
+    while(hdr.length<PER_ROW)hdr.push('');
+    rows.push(hdr);
+    for(let mi=0;mi<maxM;mi++){
+      const mr=grp.map(team=>team[mi]?team[mi].n:'');
+      while(mr.length<PER_ROW)mr.push('');
+      rows.push(mr);
+    }
+    if(gs+PER_ROW<app.result.length)rows.push(['','','','','']);
+  }
+  const wsVis=XLSX.utils.aoa_to_sheet(rows);
+  wsVis['!cols']=[{wch:20},{wch:20},{wch:20},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,wsVis,'新チーム結果');
   const prevData=[];
   app.result.forEach((bucket,ni)=>{
     bucket.forEach(m=>{prevData.push({'チーム名':'チーム'+(ni+1),'メンバー名':m.n});});
